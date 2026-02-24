@@ -1,0 +1,6 @@
+class FileManager
+{
+public:
+    FileManager();
+};
+
