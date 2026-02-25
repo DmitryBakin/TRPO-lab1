@@ -5,14 +5,19 @@ class File
 {
 public:
     File();
-    File(QString fileName);
+    File(QString filePath);
+
+    bool isChanged();
 
     bool exists();
-    qint64 size();
+    int size();
+
 
 
 private:
 
+    QString m_filePath;
+
     bool m_exists = 0;
-    qint64 m_size = 0;
+    int m_size = 0;
 };

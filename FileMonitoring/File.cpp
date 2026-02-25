@@ -3,9 +3,11 @@
 
 File::File() {}
 
-File::File(QString fileName)
+File::File(QString filePath)
 {
-    QFileInfo fileInfo(fileName);
+    QFileInfo fileInfo(filePath);
+
+    m_filePath = filePath;
 
     m_exists = fileInfo.exists();
 
@@ -13,16 +15,24 @@ File::File(QString fileName)
         m_size = fileInfo.size();
     else
         m_size = 0;
-
 }
 
+bool File::isChanged()
+{
+    QFileInfo fileInfo(m_filePath);
+
+    if(fileInfo.exists() == m_exists && fileInfo.size() == m_size)
+        return 0;
+    else
+        return 1;
+}
 
 bool File::exists()
 {
     return m_exists;
 }
 
-qint64 File::size()
+int File::size()
 {
     return m_size;
 }

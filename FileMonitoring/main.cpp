@@ -1,5 +1,4 @@
-#include <QObject>
-#include "File.h"
+#include "FileManager.h"
 
 #include <iostream>
 
