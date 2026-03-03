@@ -23,8 +23,17 @@ bool File::isChanged()
 
     if(fileInfo.exists() == m_exists && fileInfo.size() == m_size)
         return 0;
-    else
-        return 1;
+
+    m_exists = fileInfo.exists();
+    m_size = fileInfo.size();
+
+    return 1;
+
+}
+
+QString File::filePath()
+{
+    return m_filePath;
 }
 
 bool File::exists()

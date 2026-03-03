@@ -9,6 +9,7 @@ public:
 
     bool isChanged();
 
+    QString filePath();
     bool exists();
     int size();
 
