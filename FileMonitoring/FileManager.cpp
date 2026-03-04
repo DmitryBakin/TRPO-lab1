@@ -1,5 +1,7 @@
 #include "FileManager.h"
 
+FileManager::FileManager()
+{}
 
 void FileManager::addFiles(QStringList paths)
 {
@@ -29,4 +31,9 @@ bool FileManager::containts(QString path)
             return 1;
         }
     return 0;
+}
+
+QVector<File> FileManager::getFileVector()
+{
+    return m_fileVector;
 }

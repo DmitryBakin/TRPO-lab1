@@ -1,9 +1,11 @@
-#include "FileManager.h"
-
+#include <QCoreApplication>
 #include <iostream>
 
-int main()
+#include "FileManager.h"
+
+int main(int argc, char *argv[])
 {
+    QCoreApplication a(argc, argv);
     //File file("C:/GItHub/TRPO-lab1/FileMonitoring/text.txt");
 
     //std::cout << file.exists() << "\n" << file.size() << " byte\n";
@@ -16,5 +18,7 @@ int main()
 
     instance.addFiles(list);
 
-    return 0;
+    std::cout << instance.getFileVector()[0].exists() << std::endl;
+
+    return a.exec();
 }

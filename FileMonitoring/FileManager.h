@@ -16,6 +16,10 @@ public:
     void removeFiles(QStringList paths);
 
     bool containts(QString path);
+    QVector<File> getFileVector();
+
+public slots:
+
 
 private:
     QVector<File> m_fileVector;

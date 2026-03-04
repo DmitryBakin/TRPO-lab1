@@ -23,12 +23,18 @@ bool File::isChanged()
 
     if(fileInfo.exists() == m_exists && fileInfo.size() == m_size)
         return 0;
-
-    m_exists = fileInfo.exists();
-    m_size = fileInfo.size();
-
     return 1;
+}
 
+void File::update()
+{
+    QFileInfo fileInfo(m_filePath);
+
+    if(fileInfo.exists() != m_exists || fileInfo.size() != m_size)
+    {
+        m_exists = fileInfo.exists();
+        m_size = fileInfo.size();
+    }
 }
 
 QString File::filePath()
