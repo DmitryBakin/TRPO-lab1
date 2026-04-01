@@ -26,6 +26,10 @@ public slots:
 
 
 private:
-    QVector<File> m_fileVector;
+    QVector<QFileInfo> m_fileVector;
+    
+    QTimer *m_timer;
+
+    IFileLogs *m_outputMethod = new PrintInfoToConsole();
 };
 
