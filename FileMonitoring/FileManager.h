@@ -1,7 +1,11 @@
-#include "File.h"
+#include <QTimer>
+
+#include "IFileLogs.h"
 
 class FileManager : public QObject
 {
+    Q_OBJECT
+
 public:
 
     static FileManager& Instance()
@@ -27,6 +31,12 @@ public:
 
     bool contains(QString path);
 
+    void startTimer();
+    void stopTimer();
+
+public slots:
+    void onTimeout();
+
 private:
     QVector<QFileInfo> m_fileVector;
     
@@ -34,4 +44,3 @@ private:
 
     IFileLogs *m_outputMethod = new PrintInfoToConsole();
 };
-
