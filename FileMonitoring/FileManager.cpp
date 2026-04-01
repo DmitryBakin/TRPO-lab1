@@ -3,6 +3,17 @@
 FileManager::FileManager()
 {}
 
+void FileManager::setOutputMethod(IFileLogs* outputMethod)
+{
+    if(outputMethod ==  nullptr)
+    {
+        return;
+    }
+
+    delete m_outputMethod;
+    m_outputMethod = outputMethod;
+}
+
 void FileManager::addFiles(QStringList paths)
 {
     for(int i = 0; i < paths.size(); i++)
