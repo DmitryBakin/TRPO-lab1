@@ -1,7 +1,19 @@
 #include "FileManager.h"
 
 FileManager::FileManager()
-{}
+{
+    m_timer = new QTimer();
+
+    connect(m_timer, &QTimer::timeout, this, &FileManager::onTimeout);
+}
+
+FileManager::~FileManager()
+{
+    m_timer->stop();
+    delete m_timer;
+
+    delete m_outputMethod;
+}
 
 void FileManager::setOutputMethod(IFileLogs* outputMethod)
 {
@@ -47,4 +59,24 @@ bool FileManager::containts(QString path)
 QVector<File> FileManager::getFileVector()
 {
     return m_fileVector;
+}
+
+void FileManager::startTimer()
+{
+    m_timer->start(100);
+}
+
+void FileManager::stopTimer()
+{
+    m_timer->stop();
+}
+
+void FileManager::onTimeout()
+{
+    for(int i = 0; i < m_fileVector.size(); i++)
+    {
+        m_fileVector[i].refresh();
+    }
+
+    m_outputMethod->print(m_fileVector);
 }
