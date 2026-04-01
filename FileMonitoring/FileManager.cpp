@@ -7,8 +7,8 @@ void FileManager::addFiles(QStringList paths)
 {
     for(int i = 0; i < paths.size(); i++)
     {
-        if(!containts(paths[i]))
-            m_fileVector.push_back(File(paths[i]));
+        if(!contains(paths[i]))
+            m_fileVector.push_back(QFileInfo(paths[i]));
     }
 }
 
