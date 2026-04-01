@@ -3,14 +3,18 @@
 class FileManager : public QObject
 {
 public:
+
     static FileManager& Instance()
     {
         static FileManager s;
         return s;
     }
 
+private:
+
     FileManager();
     FileManager(FileManager const& manager);
+    ~FileManager();
 
     void addFiles(QStringList paths);
     void removeFiles(QStringList paths);
