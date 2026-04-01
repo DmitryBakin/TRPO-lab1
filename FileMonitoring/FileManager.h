@@ -16,14 +16,16 @@ private:
     FileManager(FileManager const& manager);
     ~FileManager();
 
+public:
+
+    QVector<QFileInfo> getFileVector();
+
+    void setOutputMethod(IFileLogs* outputMethod);
+
     void addFiles(QStringList paths);
     void removeFiles(QStringList paths);
 
-    bool containts(QString path);
-    QVector<File> getFileVector();
-
-public slots:
-
+    bool contains(QString path);
 
 private:
     QVector<QFileInfo> m_fileVector;
