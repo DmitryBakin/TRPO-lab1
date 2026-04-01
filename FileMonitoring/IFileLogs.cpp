@@ -2,7 +2,7 @@
 
 #include "IFileLogs.h"
 
-void PrintInfoToConsole::print(QVector<File> files)
+void PrintInfoToConsole::print(QVector<QFileInfo> files)
 {
     for(int i = 0; i < files.size(); i++)
     {
@@ -10,7 +10,7 @@ void PrintInfoToConsole::print(QVector<File> files)
     }
 }
 
-void PrintInfoToOtherFile::print(QVector<File> files)
+void PrintInfoToOtherFile::print(QVector<QFileInfo> files)
 {
 
     QFile file("C:/TRPO-lab1-Development/output.txt");
