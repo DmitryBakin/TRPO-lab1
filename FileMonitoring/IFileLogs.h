@@ -1,4 +1,5 @@
 #include <QObject>
+#include <QCoreApplication>
 #include <QDateTime>
 #include <QFileInfo>
 #include <QTextStream>

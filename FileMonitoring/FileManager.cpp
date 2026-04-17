@@ -1,33 +1,43 @@
 #include "FileManager.h"
 
 FileManager::FileManager()
+    : m_outputMethod(new PrintInfoToConsole()), m_timer(new QTimer())
 {
-    m_timer = new QTimer();
-
     connect(m_timer, &QTimer::timeout, this, &FileManager::onTimeout);
-
     connect(this, &FileManager::onFileCreated, m_outputMethod, &IFileLogs::print);
     connect(this, &FileManager::onFileRemoved, m_outputMethod, &IFileLogs::print);
     connect(this, &FileManager::onFileChanged, m_outputMethod, &IFileLogs::print);
+
+    m_timer->start(100);
 }
 
 FileManager::~FileManager()
 {
-    m_timer->stop();
-    delete m_timer;
-
+    if (m_timer) {
+        m_timer->stop();
+        delete m_timer;
+        m_timer = nullptr;
+    }
     delete m_outputMethod;
 }
 
 void FileManager::setOutputMethod(IFileLogs* outputMethod)
 {
-    if(outputMethod ==  nullptr)
+    if(outputMethod == nullptr)
     {
         return;
     }
 
+    disconnect(this, &FileManager::onFileCreated, m_outputMethod, &IFileLogs::print);
+    disconnect(this, &FileManager::onFileRemoved, m_outputMethod, &IFileLogs::print);
+    disconnect(this, &FileManager::onFileChanged, m_outputMethod, &IFileLogs::print);
+
     delete m_outputMethod;
     m_outputMethod = outputMethod;
+
+    connect(this, &FileManager::onFileCreated, m_outputMethod, &IFileLogs::print);
+    connect(this, &FileManager::onFileRemoved, m_outputMethod, &IFileLogs::print);
+    connect(this, &FileManager::onFileChanged, m_outputMethod, &IFileLogs::print);
 }
 
 void FileManager::addFiles(QStringList paths)
@@ -69,16 +79,6 @@ bool FileManager::contains(QString path) const
 QVector<QFileInfo> FileManager::getFileVector()
 {
     return m_fileVector;
-}
-
-void FileManager::startTimer()
-{
-    m_timer->start(100);
-}
-
-void FileManager::stopTimer()
-{
-    m_timer->stop();
 }
 
 void FileManager::onTimeout()

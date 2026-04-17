@@ -31,9 +31,6 @@ public:
 
     bool contains(QString path) const;
 
-    void startTimer();
-    void stopTimer();
-
 public slots:
     void onTimeout();
 
@@ -49,5 +46,5 @@ private:
     
     QTimer *m_timer;
 
-    IFileLogs *m_outputMethod = new PrintInfoToConsole();
+    IFileLogs *m_outputMethod;
 };

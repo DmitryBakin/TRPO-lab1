@@ -13,8 +13,9 @@ void PrintInfoToConsole::print(QFileInfo file)
 
 void PrintInfoToOtherFile::print(QFileInfo fileInfo)
 {
+    QString filePath = "C:/TRPO-lab1/FileMonitoring/output.txt";
 
-    QFile file("C:/TRPO-lab1-Development/output.txt");
+    QFile file(filePath);
     if (file.open(QFile::WriteOnly | QFile::Append | QFile::Text))
     {
         QTextStream out(&file);

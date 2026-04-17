@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include <QDebug>
+#include <QDir>
 #include <iostream>
 
 #include "FileManager.h"
@@ -8,7 +9,9 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QFile inputFile("C:/TRPO-lab1-development/FileMonitoring/input.txt");
+    QString filePath = "C:/TRPO-lab1/FileMonitoring/input.txt";
+
+    QFile inputFile(filePath);
 
     QString fileNames;
 
@@ -24,8 +27,6 @@ int main(int argc, char *argv[])
     FileManager& instance = FileManager::Instance();
 
     instance.addFiles(list);
-
-    instance.startTimer();
 
     return a.exec();
 }
