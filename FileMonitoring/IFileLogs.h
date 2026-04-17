@@ -1,10 +1,6 @@
 #include <QDateTime>
-#include <QFile>
 #include <QFileInfo>
 #include <QTextStream>
-
-
-#include "File.h"
 
 class IFileLogs
 {

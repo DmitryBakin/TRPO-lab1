@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <QDebug>
 #include <iostream>
 
 #include "FileManager.h"
@@ -6,19 +7,25 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    //File file("C:/GItHub/TRPO-lab1/FileMonitoring/text.txt");
 
-    //std::cout << file.exists() << "\n" << file.size() << " byte\n";
+    QFile inputFile("C:/TRPO-lab1-development/FileMonitoring/input.txt");
 
-    QString fileNames = "C:/GItHub/TRPO-lab1/FileMonitoring/text.txt,C:/GItHub/TRPO-lab1/FileMonitoring/tex.txt";
+    QString fileNames;
 
-    QStringList list = fileNames.split(',');
+    if (inputFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        QTextStream input(&inputFile);
+
+        fileNames = input.readAll();
+    }
+
+    QStringList list = fileNames.split(",");
 
     FileManager& instance = FileManager::Instance();
 
     instance.addFiles(list);
 
-    std::cout << instance.getFileVector()[0].exists() << std::endl;
+    instance.startTimer();
 
     return a.exec();
 }

@@ -29,7 +29,7 @@ public:
     void addFiles(QStringList paths);
     void removeFiles(QStringList paths);
 
-    bool contains(QString path);
+    bool contains(QString path) const;
 
     void startTimer();
     void stopTimer();
