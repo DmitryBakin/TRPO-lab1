@@ -1,27 +1,35 @@
+#include <QObject>
 #include <QDateTime>
 #include <QFileInfo>
 #include <QTextStream>
 
-class IFileLogs
+class IFileLogs :public QObject
 {
+    Q_OBJECT
 public:
     virtual ~IFileLogs() = default;
 
-    virtual void print(QVector<QFileInfo> files) = 0;
+public slots:
+    virtual void print(QFileInfo file) = 0;
+
 };
 
 class PrintInfoToConsole : public IFileLogs
 {
+    Q_OBJECT
     virtual ~PrintInfoToConsole() override = default;
 
-    void print(QVector<QFileInfo> files) override;
+public slots:
+    void print(QFileInfo file) override;
 };
 
 class PrintInfoToOtherFile : public IFileLogs
 {
+    Q_OBJECT
     virtual ~PrintInfoToOtherFile() override = default;
 
-    void print(QVector<QFileInfo> files) override;
+public slots:
+    void print(QFileInfo file) override;
 
 };
 

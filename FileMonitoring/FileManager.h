@@ -37,8 +37,15 @@ public:
 public slots:
     void onTimeout();
 
+signals:
+    void onFileCreated(QFileInfo file);
+    void onFileRemoved(QFileInfo file);
+    void onFileChanged(QFileInfo file);
+
 private:
     QVector<QFileInfo> m_fileVector;
+
+    QVector<QPair<int, bool>> m_vectorOldStates;
     
     QTimer *m_timer;
 
