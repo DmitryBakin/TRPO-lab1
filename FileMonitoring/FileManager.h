@@ -17,7 +17,8 @@ public:
 private:
 
     FileManager();
-    FileManager(FileManager const& manager);
+    FileManager(const FileManager& manager) = delete;
+    FileManager& operator=(const FileManager& manager) = delete;
     ~FileManager();
 
 public:
@@ -29,15 +30,15 @@ public:
     void addFiles(QStringList paths);
     void removeFiles(QStringList paths);
 
-    bool contains(QString path) const;
+    bool contains(const QString& path) const;
 
 public slots:
     void onTimeout();
 
 signals:
-    void onFileCreated(QFileInfo file);
-    void onFileRemoved(QFileInfo file);
-    void onFileChanged(QFileInfo file);
+    void onFileCreated(const QFileInfo& file);
+    void onFileRemoved(const QFileInfo& file);
+    void onFileChanged(const QFileInfo& file);
 
 private:
     QVector<QFileInfo> m_fileVector;

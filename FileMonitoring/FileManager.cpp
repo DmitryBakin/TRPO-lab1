@@ -1,7 +1,7 @@
 #include "FileManager.h"
 
 FileManager::FileManager()
-    : m_outputMethod(new PrintInfoToConsole()), m_timer(new QTimer())
+    : m_timer(new QTimer()), m_outputMethod(new PrintInfoToConsole())
 {
     connect(m_timer, &QTimer::timeout, this, &FileManager::onTimeout);
     connect(this, &FileManager::onFileCreated, m_outputMethod, &IFileLogs::print);
@@ -10,7 +10,6 @@ FileManager::FileManager()
 
     m_timer->start(100);
 }
-
 FileManager::~FileManager()
 {
     if (m_timer) {
@@ -44,13 +43,17 @@ void FileManager::addFiles(QStringList paths)
 {
     for(int i = 0; i < paths.size(); i++)
     {
-        if(!contains(paths[i]))
+        QString path = paths[i];
+        if(path.isEmpty())
+            continue;
+
+        if(!contains(path))
         {
-            m_fileVector.push_back(QFileInfo(paths[i]));
+            QFileInfo newFile(path);
+            m_fileVector.push_back(newFile);
 
-            QPair<int, bool> exist(m_fileVector[i].size(), m_fileVector[i].exists());
-
-            m_vectorOldStates.push_back(exist);
+            QPair<int, bool> currentState(newFile.size(), newFile.exists());
+            m_vectorOldStates.push_back(currentState);
         }
     }
 }
@@ -59,14 +62,15 @@ void FileManager::removeFiles(QStringList paths)
 {
     for(int i = 0; i < paths.size(); i++)
         for(int j = 0; j < m_fileVector.size(); j++)
-            if(contains(paths[i]))
+            if(m_fileVector[j].filePath() == paths[i])
             {
                 m_fileVector.remove(j);
+                m_vectorOldStates.remove(j);
                 j--;
             }
 }
 
-bool FileManager::contains(QString path) const
+bool FileManager::contains(const QString& path) const
 {
     for(int j = 0; j < m_fileVector.size(); j++)
         if(m_fileVector[j].filePath() == path)
@@ -87,21 +91,23 @@ void FileManager::onTimeout()
     {
         m_fileVector[i].refresh();
 
-        if(m_fileVector[i].exists() == 1 && m_vectorOldStates[i].second == 0)
+        QPair<int, bool> currState(m_fileVector[i].size(), m_fileVector[i].exists());
+
+        if(currState.second == 1 && m_vectorOldStates[i].second == 0)
         {
             m_vectorOldStates[i].second = 1;
 
             emit onFileCreated(m_fileVector[i]);
         }
-        else if(m_fileVector[i].exists() == 0 && m_vectorOldStates[i].second == 1)
+        else if(currState.second == 0 && m_vectorOldStates[i].second == 1)
         {
             m_vectorOldStates[i].second = 0;
 
             emit onFileRemoved(m_fileVector[i]);
         }
-        else if(m_fileVector[i].size() != m_vectorOldStates[i].first)
+        else if(currState.first != m_vectorOldStates[i].first && currState.second == 1)
         {
-            m_vectorOldStates[i].first = m_fileVector[i].size();
+            m_vectorOldStates[i].first = currState.first;
 
             emit onFileChanged(m_fileVector[i]);
         }
