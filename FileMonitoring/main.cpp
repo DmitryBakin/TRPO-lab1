@@ -9,7 +9,14 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QString filePath = "C:/TRPO-lab1/FileMonitoring/input.txt";
+    QString appDir = QCoreApplication::applicationDirPath();
+
+    QDir projectDir(appDir);
+    projectDir.cdUp();
+    projectDir.cdUp();
+    projectDir.cdUp();
+
+    QString filePath = projectDir.absolutePath() + "/input.txt";
 
     QFile inputFile(filePath);
 
@@ -27,6 +34,8 @@ int main(int argc, char *argv[])
     FileManager& instance = FileManager::Instance();
 
     instance.addFiles(list);
+
+    //instance.setOutputMethod(new PrintInfoToOtherFile());
 
     return a.exec();
 }

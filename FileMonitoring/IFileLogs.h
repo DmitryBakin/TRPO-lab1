@@ -1,4 +1,6 @@
 #include <QObject>
+#include <QDir>
+#include <qDebug>
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QFileInfo>
@@ -11,26 +13,28 @@ public:
     virtual ~IFileLogs() = default;
 
 public slots:
-    virtual void print(QFileInfo file) = 0;
+    virtual void print(const QFileInfo& file) = 0;
 
 };
 
 class PrintInfoToConsole : public IFileLogs
 {
     Q_OBJECT
+public:
     virtual ~PrintInfoToConsole() override = default;
 
 public slots:
-    void print(QFileInfo file) override;
+    void print(const QFileInfo& file) override;
 };
 
 class PrintInfoToOtherFile : public IFileLogs
 {
     Q_OBJECT
+public:
     virtual ~PrintInfoToOtherFile() override = default;
 
 public slots:
-    void print(QFileInfo file) override;
+    void print(const QFileInfo& file) override;
 
 };
 
