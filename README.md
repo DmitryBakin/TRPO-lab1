@@ -32,6 +32,8 @@ IFileLogs - Логгер. Содержит слот print(const QFileInfo&).
 PrintInfoToConsole - выводит информацию в консоль через qDebug(), наследуется от IFileLogs.
 PrintInfoToOtherFile - выводит информацию в файл output.txt, наследуется от IFileLogs.
 
+UML-Диаграмма: https://drive.google.com/file/d/1v2J8wSgrU51x2oSyV8hTaUgf0oy2tCNs/view?usp=drive_link
+
 Применённые паттерны:
 Паттерн Singleton (Одиночка)
 Назначение: гарантирует, что класс имеет только один экземпляр.
