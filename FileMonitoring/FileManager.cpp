@@ -96,16 +96,18 @@ void FileManager::onTimeout()
         if(currState.second == 1 && m_vectorOldStates[i].second == 0)
         {
             m_vectorOldStates[i].second = 1;
+            m_vectorOldStates[i].first = currState.first;
 
             emit onFileCreated(m_fileVector[i]);
         }
         else if(currState.second == 0 && m_vectorOldStates[i].second == 1)
         {
             m_vectorOldStates[i].second = 0;
+            m_vectorOldStates[i].first = 0;
 
             emit onFileRemoved(m_fileVector[i]);
         }
-        else if(currState.first != m_vectorOldStates[i].first && currState.second == 1)
+        else if(currState.first != m_vectorOldStates[i].first)
         {
             m_vectorOldStates[i].first = currState.first;
 

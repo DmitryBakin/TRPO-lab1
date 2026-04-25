@@ -35,6 +35,15 @@ int main(int argc, char *argv[])
 
     instance.addFiles(list);
 
+    QVector<QFileInfo> currStates = instance.getFileVector();
+
+    for(int i = 0; i < currStates.size(); i++)
+        qDebug()
+            << QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss")
+            << " Path:" << currStates[i].filePath()
+            << " Exists:" << currStates[i].exists()
+            << " Size:" << currStates[i].size();
+
     //instance.setOutputMethod(new PrintInfoToOtherFile());
 
     return a.exec();
