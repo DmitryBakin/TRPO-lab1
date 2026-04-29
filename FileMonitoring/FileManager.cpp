@@ -14,15 +14,16 @@ FileManager::~FileManager()
 {
     if (m_timer) {
         m_timer->stop();
-        delete m_timer;
         m_timer = nullptr;
+        delete m_timer;
+
     }
     delete m_outputMethod;
 }
 
 void FileManager::setOutputMethod(IFileLogs* outputMethod)
 {
-    if(outputMethod == nullptr)
+    if (outputMethod == nullptr)
     {
         return;
     }
@@ -41,13 +42,13 @@ void FileManager::setOutputMethod(IFileLogs* outputMethod)
 
 void FileManager::addFiles(QStringList paths)
 {
-    for(int i = 0; i < paths.size(); i++)
+    for (int i = 0; i < paths.size(); i++)
     {
         QString path = paths[i];
-        if(path.isEmpty())
+        if (path.isEmpty())
             continue;
 
-        if(!contains(path))
+        if (!contains(path))
         {
             QFileInfo newFile(path);
             m_fileVector.push_back(newFile);
@@ -60,9 +61,9 @@ void FileManager::addFiles(QStringList paths)
 
 void FileManager::removeFiles(QStringList paths)
 {
-    for(int i = 0; i < paths.size(); i++)
-        for(int j = 0; j < m_fileVector.size(); j++)
-            if(m_fileVector[j].filePath() == paths[i])
+    for (int i = 0; i < paths.size(); i++)
+        for (int j = 0; j < m_fileVector.size(); j++)
+            if (m_fileVector[j].filePath() == paths[i])
             {
                 m_fileVector.remove(j);
                 m_vectorOldStates.remove(j);
@@ -70,10 +71,17 @@ void FileManager::removeFiles(QStringList paths)
             }
 }
 
+void FileManager::clear()
+{
+
+    m_fileVector.clear();
+    m_vectorOldStates.clear();
+}
+
 bool FileManager::contains(const QString& path) const
 {
-    for(int j = 0; j < m_fileVector.size(); j++)
-        if(m_fileVector[j].filePath() == path)
+    for (int j = 0; j < m_fileVector.size(); j++)
+        if (m_fileVector[j].filePath() == path)
         {
             return 1;
         }
@@ -87,27 +95,27 @@ QVector<QFileInfo> FileManager::getFileVector()
 
 void FileManager::onTimeout()
 {
-    for(int i = 0; i < m_fileVector.size(); i++)
+    for (int i = 0; i < m_fileVector.size(); i++)
     {
         m_fileVector[i].refresh();
 
         QPair<int, bool> currState(m_fileVector[i].size(), m_fileVector[i].exists());
 
-        if(currState.second == 1 && m_vectorOldStates[i].second == 0)
+        if (currState.second == 1 && m_vectorOldStates[i].second == 0)
         {
             m_vectorOldStates[i].second = 1;
             m_vectorOldStates[i].first = currState.first;
 
             emit onFileCreated(m_fileVector[i]);
         }
-        else if(currState.second == 0 && m_vectorOldStates[i].second == 1)
+        else if (currState.second == 0 && m_vectorOldStates[i].second == 1)
         {
             m_vectorOldStates[i].second = 0;
             m_vectorOldStates[i].first = 0;
 
             emit onFileRemoved(m_fileVector[i]);
         }
-        else if(currState.first != m_vectorOldStates[i].first)
+        else if (currState.first != m_vectorOldStates[i].first)
         {
             m_vectorOldStates[i].first = currState.first;
 

@@ -9,42 +9,48 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QString appDir = QCoreApplication::applicationDirPath();
+    bool initialStatePrinted = false;
 
-    QDir projectDir(appDir);
-    projectDir.cdUp();
-    projectDir.cdUp();
-    projectDir.cdUp();
+    QTimer *timer = new QTimer(&a);
+    timer->setInterval(100);
 
-    QString filePath = projectDir.absolutePath() + "/input.txt";
+    QObject::connect(timer, &QTimer::timeout, &a, [&](){
+         QString appDir = QCoreApplication::applicationDirPath();
 
-    QFile inputFile(filePath);
+         QDir projectDir(appDir);
+         projectDir.cdUp();
+         projectDir.cdUp();
+         projectDir.cdUp();
 
-    QString fileNames;
+         QString filePath = projectDir.absolutePath() + "/input.txt";
+         QFile inputFile(filePath);
 
-    if (inputFile.open(QFile::ReadOnly | QFile::Text))
-    {
-        QTextStream input(&inputFile);
+         if (inputFile.open(QFile::ReadOnly | QFile::Text))
+         {
+             QTextStream stream(&inputFile);
+             QString fileNames = stream.readAll();
+             inputFile.close();
 
-        fileNames = input.readAll();
-    }
+             QStringList list = fileNames.split(",");
+             FileManager& instance = FileManager::Instance();
+             instance.clear();
+             instance.addFiles(list);
+         }
+         FileManager& instance = FileManager::Instance();
+         QVector<QFileInfo> currStates = instance.getFileVector();
 
-    QStringList list = fileNames.split(",");
+         if(!initialStatePrinted)
+         {
+             for(int i = 0; i < currStates.size(); i++)
+                 qDebug() << QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss")
+                          << "Path:" << currStates[i].filePath()
+                          << "Exists:" << currStates[i].exists()
+                          << "Size:" << currStates[i].size();
+             initialStatePrinted = true;
+         }
+     });
 
-    FileManager& instance = FileManager::Instance();
-
-    instance.addFiles(list);
-
-    QVector<QFileInfo> currStates = instance.getFileVector();
-
-    for(int i = 0; i < currStates.size(); i++)
-        qDebug()
-            << QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss")
-            << " Path:" << currStates[i].filePath()
-            << " Exists:" << currStates[i].exists()
-            << " Size:" << currStates[i].size();
-
-    //instance.setOutputMethod(new PrintInfoToOtherFile());
+    timer->start();
 
     return a.exec();
 }

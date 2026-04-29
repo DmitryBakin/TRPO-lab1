@@ -29,6 +29,7 @@ public:
 
     void addFiles(QStringList paths);
     void removeFiles(QStringList paths);
+    void clear();
 
     bool contains(const QString& path) const;
 
